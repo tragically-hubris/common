@@ -2,6 +2,7 @@ package com.tragicallyhubris.datum.datom
 
 import com.tragicallyhubris.datum.datom.Datom.Assert
 import com.tragicallyhubris.datum.datom.Datom.Retract
+import com.tragicallyhubris.lang.iterators.comparator
 
 typealias E = String
 typealias A = String
@@ -23,7 +24,13 @@ sealed interface Datom {
     val isRetract get() = o == retraction
 
     companion object : (E, A, V, T, O) -> Datom {
-        override fun invoke(e: E, a: A, v: V, t: T, o: O): Datom =
+        override fun invoke(
+            e: E,
+            a: A,
+            v: V,
+            t: T,
+            o: O,
+        ): Datom =
             when (o) {
                 assertion -> Assert(e, a, v, t)
                 else -> Retract(e, a, v, t)
@@ -49,72 +56,66 @@ sealed interface Datom {
     }
 }
 
-fun assertion(e: E, a: A, v: V, t: T) = Assert(e, a, v, t)
-fun retraction(e: E, a: A, v: V, t: T) = Retract(e, a, v, t)
+fun assertion(
+    e: E,
+    a: A,
+    v: V,
+    t: T,
+) = Assert(e, a, v, t)
+
+fun retraction(
+    e: E,
+    a: A,
+    v: V,
+    t: T,
+) = Retract(e, a, v, t)
 
 val eComparator: Comparator<E> = comparator { e1, e2 -> e1.compareTo(e2) }
 val aComparator: Comparator<A> = comparator { a1, a2 -> a1.compareTo(a2) }
 val vComparator: Comparator<V> = comparator { v1, v2 -> v1.compareTo(v2) }
 val tComparator: Comparator<T> = comparator { t1, t2 -> t1.compareTo(t2) }
 
-val eavtComparator: Comparator<Datom> = comparator { d1, d2 ->
-    var d = d1.e.compareTo(d2.e)
-    if (d == 0) d = d1.a.compareTo(d2.a)
-    if (d == 0) d = d1.v.compareTo(d2.v)
-    if (d == 0) d = d1.t.compareTo(d2.t)
-    d
-}
+val eavtComparator: Comparator<Datom> =
+    comparator { d1, d2 ->
+        var d = d1.e.compareTo(d2.e)
+        if (d == 0) d = d1.a.compareTo(d2.a)
+        if (d == 0) d = d1.v.compareTo(d2.v)
+        if (d == 0) d = d1.t.compareTo(d2.t)
+        d
+    }
 
-val aevtComparator: Comparator<Datom> = comparator { d1, d2 ->
-    var d = d1.a.compareTo(d2.a)
-    if (d == 0) d = d1.e.compareTo(d2.e)
-    if (d == 0) d = d1.v.compareTo(d2.v)
-    if (d == 0) d = d1.t.compareTo(d2.t)
-    d
-}
+val aevtComparator: Comparator<Datom> =
+    comparator { d1, d2 ->
+        var d = d1.a.compareTo(d2.a)
+        if (d == 0) d = d1.e.compareTo(d2.e)
+        if (d == 0) d = d1.v.compareTo(d2.v)
+        if (d == 0) d = d1.t.compareTo(d2.t)
+        d
+    }
 
-val avetComparator: Comparator<Datom> = comparator { d1, d2 ->
-    var d = d1.a.compareTo(d2.a)
-    if (d == 0) d = d1.v.compareTo(d2.v)
-    if (d == 0) d = d1.e.compareTo(d2.e)
-    if (d == 0) d = d1.t.compareTo(d2.t)
-    d
-}
+val avetComparator: Comparator<Datom> =
+    comparator { d1, d2 ->
+        var d = d1.a.compareTo(d2.a)
+        if (d == 0) d = d1.v.compareTo(d2.v)
+        if (d == 0) d = d1.e.compareTo(d2.e)
+        if (d == 0) d = d1.t.compareTo(d2.t)
+        d
+    }
 
-val vaetComparator: Comparator<Datom> = comparator { d1, d2 ->
-    var d = d1.v.compareTo(d2.v)
-    if (d == 0) d = d1.a.compareTo(d2.a)
-    if (d == 0) d = d1.e.compareTo(d2.e)
-    if (d == 0) d = d1.t.compareTo(d2.t)
-    d
-}
-
-fun <I : Any> comparator(f: (I, I) -> Int) = Comparator<I> { i1, i2 -> f(i1, i2) }
-
-fun <I : Any> comparison(f: (I) -> Int) = object : (I) -> Int {
-    override fun invoke(i: I): Int =
-        f(i)
-}
-
-fun <I : Any> Comparator<I>.comparisonFor(item: I) = comparison<I> { this.compare(it, item) }
-
-val intComparator = Comparator<Int> { i1, i2 -> i1.compareTo(i2) }
-fun Int.comparison(): (Int) -> Int = intComparator.comparisonFor(this)
-
-val longComparator = Comparator<Long> { i1, i2 -> i1.compareTo(i2) }
-fun Long.comparison(): (Long) -> Int = longComparator.comparisonFor(this)
-
-val stringComparator = Comparator<String> { i1, i2 -> i1.compareTo(i2) }
-fun String.comparison(): (String) -> Int = stringComparator.comparisonFor(this)
-
-fun <T : Any> Iterator<T>.nextOrNull(): T? =
-    if (hasNext()) next() else null
+val vaetComparator: Comparator<Datom> =
+    comparator { d1, d2 ->
+        var d = d1.v.compareTo(d2.v)
+        if (d == 0) d = d1.a.compareTo(d2.a)
+        if (d == 0) d = d1.e.compareTo(d2.e)
+        if (d == 0) d = d1.t.compareTo(d2.t)
+        d
+    }
 
 // e1, a1, v1, t1, assert
 // e1, a1, v1, t2, retract
 // e1, a1, v2, t1, assert
 
-//fun Iterator<Datom>.headDatomIterator(): Iterator<Datom> {
+// fun Iterator<Datom>.headDatomIterator(): Iterator<Datom> {
 //    var previous: Datom?
 //    var next: Datom? = null
 //    return lazyNextOrNullIterator {
@@ -134,5 +135,5 @@ fun <T : Any> Iterator<T>.nextOrNull(): T? =
 //        }
 //        v
 //    }
-//}
+// }
 //

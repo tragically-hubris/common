@@ -24,7 +24,7 @@
             <option value="$PROJECT_DIR$/datum" />
             <option value="$PROJECT_DIR$/datum/datom" />
             <option value="$PROJECT_DIR$/lang" />
-            <option value="$PROJECT_DIR$/lang/iterators" />
+            <option value="$PROJECT_DIR$/lang/collections" />
           </set>
         </option>
       </GradleProjectSettings>

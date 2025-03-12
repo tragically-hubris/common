@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.lang.collections)
+
     implementation(libs.bundles.kotlinx.ecosystem)
 
     testImplementation(kotlin("test"))
