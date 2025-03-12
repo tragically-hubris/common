@@ -1,4 +1,4 @@
-package com.tragicallyhubris.common.iterators
+package com.tragicallyhubris.lang.iterators
 
 fun <T : Any> Iterator<T>.nextOrNull(): T? = if (hasNext()) next() else null
 

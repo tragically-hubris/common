@@ -21,7 +21,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/iterators" />
+            <option value="$PROJECT_DIR$/datum" />
+            <option value="$PROJECT_DIR$/datum/datom" />
+            <option value="$PROJECT_DIR$/lang" />
+            <option value="$PROJECT_DIR$/lang/iterators" />
           </set>
         </option>
       </GradleProjectSettings>

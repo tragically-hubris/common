@@ -1,4 +1,4 @@
-package com.tragicallyhubris.common.iterators
+package com.tragicallyhubris.lang.iterators
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec

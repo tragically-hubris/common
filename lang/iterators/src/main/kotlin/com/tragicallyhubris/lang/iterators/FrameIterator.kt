@@ -1,4 +1,4 @@
-package com.tragicallyhubris.common.iterators
+package com.tragicallyhubris.lang.iterators
 
 class Frame<T : Any>(
     previous: T? = null,
